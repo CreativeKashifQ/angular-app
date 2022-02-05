@@ -1,0 +1,35 @@
+<app-main-nav></app-main-nav>
+
+<div class="wrapper">
+  <main class="container">
+
+      <div class="d-flex justify-content-center text-center">
+       <div>
+         <h1 class="mt-5 mb-4">Profile</h1>
+
+         <img  onclick="document.getElementById('avatar').click()" class="rounded-circle" width="96" height="96" [src]="imageSrc || '/assets/images/ProfileImage.png'" alt="Profile Details">
+         <input id="avatar" hidden type='file' (change)="uploadAvatar($event);" />
+
+        <div>
+          <h1 class="pt-4">{{user.name}}</h1>
+          <span>{{user.email}}</span>
+        </div>
+
+         <a routerLink="/edit-profile" class="btn btn-outline-primary mt-3">
+           <span class="me-2"><i class="fa-regular fa-pen-to-square"></i></span>
+           Edit Profile
+         </a>
+       </div>
+      </div>
+
+     <div *ngIf="!user.provider" class="d-flex justify-content-between pt-5">
+       <h2 class="align-self-center">Interest</h2>
+     </div>
+
+     <div class="d-inlin-flex  ">
+       <span style="margin-left:2px!important" *ngFor="let role of rolesItems" class="badge rounded-pill bg-primary">{{role}}</span>
+     </div>
+
+
+  </main>
+ </div>

@@ -1,0 +1,63 @@
+<app-main-nav></app-main-nav>
+
+<div class="event_wrapper mt-3">
+  <div class="container">
+    <div class="d-inline-flex">
+      <h1 class="mt-3 ">My Events</h1>
+    </div>
+    <div class="text-center" *ngIf="events?.length === 0">
+      <p>You can add events from https://popuplive.net, Already added events can view here.</p>
+      <a [href]="'https://popuplive.net'" target="_blank" class="btn btn-success btn-sm mt-4">Add Event</a>
+    </div>
+
+    <div  *ngFor="let event of events" class="card shadow-sm pt-1 pb-3 px-0 mb-3 mb-sm-3" id="ads">
+      <a target="_blank" [href]="[event.url]">
+      <div class="card-image">
+        <span class="card-notify-badge">
+          {{moment(event.date).format('ll')}}</span>
+        <span class="card-notify-year">
+          <a href="">
+            <i class="fa-regular fa-bookmark"></i></a></span>
+        <img class="card-img-top img-fluid" src="assets/images/image 84.png" alt="Card image cap" />
+      </div>
+    </a>
+      <div class="card-body">
+        <h2 class="card-title">{{event.name}}</h2>
+
+        <div class="row">
+          <div class="col-6">
+                <h6 class="going"> <small>Category :</small> {{event.category}}</h6>
+            </div>
+          <div class="col-6 p-0 m-0">
+            <h6 class="going"> <small></small> {{moment(event.start_time,"HH:mm").format('LT')}} to {{moment(event.end_time,"HH:mm").format('LT')}}</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+                <h6 class="going"> <small>Status :</small></h6>
+            </div>
+          <div class="col-6 p-0 m-0">
+            <span class="badge rounded-pill bg-success"> {{event.status}}</span>
+          </div>
+        </div>
+
+        <div class="location d-inline-block mt-2 mt-sm-2">
+          <h6 class="text-secondary events_location">
+            <svg width="15px" height="15px" aria-hidden="true" focusable="false" data-prefix="fas"
+              data-icon="map-marker-alt" class="svg-inline--fa fa-map-marker-alt fa-w-12" role="img"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+              <path fill="gray"
+                d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z">
+              </path>
+            </svg>
+            {{event.place_name}}
+          </h6>
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+</div>
+

@@ -1,0 +1,33 @@
+<div class="wrapper">
+
+  <div class="row">
+      <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-12">
+          <div class="d-block">
+            <form (ngSubmit)="verifyEmail()">
+              <h1 class="mt-5 mb-4">Verify Email</h1>
+              <p>Enter 4 digits OTP sent on your email, just to make verify your email</p>
+
+              <div class="search my-4">
+                  <img src="/assets/images/Lock.png" alt="" /><input name="otp" maxlength="4" [(ngModel)]="otp" type="text" [class]="'form-control' + (errors.otp ? ' is-invalid ' : '')" placeholder="2354" />
+                  <span class="invalid-feedback" *ngIf="errors.otp">{{errors.otp}}</span>
+              </div>
+
+              <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-md px-4 py-2 w-100 mx-auto text-white my-4" style="background-color: #5669ff">
+                      <span class="align-middle">Verify Email</span><img class="float-end" src="/assets/images/Group 4.png" />
+                  </button>
+              </div>
+            </form>
+
+
+
+
+
+
+
+          </div>
+      </div>
+  </div>
+
+
+</div>

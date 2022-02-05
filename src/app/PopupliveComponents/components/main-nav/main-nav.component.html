@@ -1,0 +1,72 @@
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="/dashboard">PopupLive</a>
+
+      <!-- Side Canvas Starting -->
+
+      <button class="btn btn-primary navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width:250px;">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <div class="ms-2">
+            <img src="../../../assets/images/Profile.png" width="65" height="65" class="rounded-circle" />
+            <h3 class="mt-3">{{user.name}}</h3>
+          </div>
+          <div class="form-check p-0 ms-2 mt-4 sadbar">
+            <span><i class="fas fa-gifts me-3"></i></span>
+            <label class="form-check-label" for="flexCheckDefault">
+              <a routerLink="/my-events">My Events</a>
+            </label>
+          </div>
+
+          <div class="form-check p-0 ms-2 mt-4 sadbar">
+            <span><i class="fa-solid fa-user me-3"></i></span>
+            <label class="form-check-label" for="flexCheckDefault">
+              <a routerLink="/profile">My Profile</a>
+            </label>
+          </div>
+
+
+          <div class="form-check p-0 ms-2 mt-3 sadbar">
+            <span><i class="fa-solid fa-gear me-3"></i></span>
+            <label class="form-check-label" for="flexCheckDefault">
+              <a routerLink="/settings">Settings</a>
+            </label>
+          </div>
+
+
+
+          <div class="form-check p-0 ms-2 mt-3 sadbar">
+            <span><i class="fa-solid fa-arrow-right-from-bracket me-3"></i></span>
+            <label class="form-check-label" for="flexCheckDefault">
+            <a href="javascript:void(0)" (click)="logout()"> Sign Out</a>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side Canvas Ending -->
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0"></ul>
+        <div class="dropdown shadow rounded-3 show mx-1 mx-sm-1">
+          <button class="btn btn-transparent dropdown-toggle"  type="button" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+        </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a href="javascript:void(0)" class="dropdown-item" (click)="logout()">Log out</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+
+</header>

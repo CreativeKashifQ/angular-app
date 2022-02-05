@@ -1,0 +1,47 @@
+<div class="wrapper">
+
+  <div class="row">
+      <div class="col-lg-6 offset-lg-3 col-md-6 offset-md-3 col-12">
+          <div class="d-block">
+            <form (ngSubmit)="attemptLogin()">
+              <h1 class="mt-5 mb-4">Sign In</h1>
+              <div class="search my-4">
+                  <img src="/assets/images/Message.png" alt="" /><input name="email" [(ngModel)]="user.email" type="email" [class]="'form-control ' + ( errors.email ? ' is-invalid' : '')" placeholder="abc@gmail.com" />
+                  <span class="invalid-feedback" *ngIf="errors.email">{{errors.email}}</span>
+              </div>
+
+              <div class="search my-4">
+                  <img src="/assets/images/Lock.png" alt="" /><input name="password" [(ngModel)]="user.password" type="password" [class]="'form-control' + (errors.password ? ' is-invalid ' : '')" placeholder="Password" />
+                  <span class="invalid-feedback" *ngIf="errors.password">{{errors.password}}</span>
+              </div>
+
+              <div class="d-flex justify-content-center">
+                  <button type="submit" class="btn btn-md px-4 py-2 w-100 mx-auto text-white my-4" style="background-color: #5669ff">
+                      <span class="align-middle">Sign In</span><img class="float-end" src="/assets/images/Group 4.png" />
+                  </button>
+              </div>
+            </form>
+              <div class="d-flex justify-content-center">
+                  <span class="h5 text-secondary my-2">OR</span>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button type="button" (click)="loginWithGoogle()" class="btn btn-md btn-light bg-white px-4 mt-3 py-2 w-100 text-dark">
+                    <img class="me-3" src="assets/images/Google.png" /> <span class="align-middle">Continue With Google</span>
+                </button>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="button" (click)="loginWithFacebook()" class="btn btn-md btn-light bg-white px-2 mt-3 mt-2 py-2 w-100 text-dark">
+                    <img class="me-3" src="assets/images/Facebook.png" /> <span class="align-middle">Continue With Facebook</span>
+                </button>
+            </div>
+
+              <div class="d-flex justify-content-center">
+                  <h6 class="my-3">Not register yet ?  <a routerLink="register">Sign Up</a></h6>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+</div>
