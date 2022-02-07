@@ -47,8 +47,8 @@ export class ProfileComponent extends NgComponent implements OnInit {
     var binaryString = readerEvt.target.result;
     const filestring = btoa(binaryString);  // Converting binary string data.
     this.accountService.uploadFile(filestring).subscribe(
-        response => console.log(response),
-        error=> console.error(error)
+        (res) => this.ngOnInit(),
+        (ex) => this.handleException(ex)
     );
   }
 
@@ -65,7 +65,6 @@ export class ProfileComponent extends NgComponent implements OnInit {
     this.accountService.user().subscribe(
       (res) => {
         this.user = res as IUser
-        console.log(this.user);
         this.imageSrc = this.user.avatar
         this.rolesItems = this.user.roles.split(',')
       },
