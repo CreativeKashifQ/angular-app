@@ -1,0 +1,6 @@
+{
+	"appId": "popuplive.net",
+	"appName": "popuplive-attendy-app",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

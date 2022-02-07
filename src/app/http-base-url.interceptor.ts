@@ -16,9 +16,6 @@ export class HttpBaseUrlInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const headers = new HttpHeaders({
     'Content-Type' : 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:4200',
-    'Access-Control-Allow-Headers': '*',
-    'Access-Control-Allow-Methods': 'GET,POST,DELETE,PUT',
     'enctype': 'multipart/form-data',
     'Authorization' : `Bearer ${localStorage.getItem('secretHash')}`
   })

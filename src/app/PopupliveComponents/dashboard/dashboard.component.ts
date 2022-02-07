@@ -11,6 +11,7 @@ import {  NgComponent } from '../../Helper/ng-component'
 import * as moment from 'moment';
 import { EventService } from 'src/app/Services/event.service';
 import { Filter } from './filter.model';
+import { Geolocation } from '@capacitor/geolocation';
 
 
 
@@ -60,6 +61,9 @@ export class DashboardComponent extends NgComponent implements OnInit{
   dateRange: any
   map!: mapboxgl.Map;
   moment: any = moment
+  current_lat !: number
+  current_lng !: number
+
 
 
   constructor(@Inject(DOCUMENT) private readonly document: HTMLDocument,
@@ -68,6 +72,8 @@ export class DashboardComponent extends NgComponent implements OnInit{
     this.document = document
 
   }
+
+
 
 
 
@@ -143,12 +149,16 @@ export class DashboardComponent extends NgComponent implements OnInit{
 
 
   }
+ loadcurrentLocation = async () => {
+    const coordinates = await Geolocation.getCurrentPosition();
+    this.current_lat = coordinates.coords.latitude;
+    this.current_lng = coordinates.coords.longitude;
+  };
 
   ngOnInit(): void {
-    // this.accountService.user().subscribe(
-    //   (res) => console.log(res)
 
-    // )
+    this.loadcurrentLocation();
+
     //fatch events to show on map
     this.eventService.showEvents().subscribe(
       (res) => {
@@ -203,7 +213,7 @@ export class DashboardComponent extends NgComponent implements OnInit{
       positionOptions: {
         enableHighAccuracy: false
       },
-      trackUserLocation: false
+      trackUserLocation: true
     });
     // Add the control to the map.
     instance.map.addControl(geolocate);
@@ -218,7 +228,7 @@ export class DashboardComponent extends NgComponent implements OnInit{
     geolocate.on("geolocate", locateUser);
 
     function locateUser(e: any) {
-      instance.geoLocateCenter = [e.coords.longitude, e.coords.latitude]
+      instance.geoLocateCenter = [instance.current_lng, instance.current_lat]
       let searchRadius = instance.makeRadius(instance.geoLocateCenter, instance.selectedRadius);
       const anySrcImplObj: any = instance.map.getSource('search-radius');
       anySrcImplObj.setData(searchRadius);

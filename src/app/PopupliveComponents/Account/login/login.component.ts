@@ -45,7 +45,9 @@ export class LoginComponent extends NgComponent implements OnInit {
         localStorage.setItem('user', JSON.stringify(response.user));
         this.router.navigate(['dashboard'])
       },
-      (ex) => this.handleException(ex)
+      (ex) => {
+        this.handleException(ex);
+      }
     );
   }
 
