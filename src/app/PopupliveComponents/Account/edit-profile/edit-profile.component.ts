@@ -26,18 +26,33 @@ export class EditProfileComponent extends NgComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setBusy()
+    const instance = this
     this.accountService.user().subscribe(
       (res)  => {
-         this.user = res as IUser
+        instance.clearBusy()
+        this.user = res as IUser
+
       },
-      (ex) => this.handleException(ex)
+      (ex) => {
+        instance.clearBusy()
+        this.handleException(ex)
+      }
     )
   }
 
   updateUser(){
+    this.setBusy()
+    const instance = this
     this.accountService.updateUser(this.user).subscribe(
-      (res) => this.router.navigate(['profile']),
-      (ex) => this.handleException(ex)
+      (res) => {
+        instance.clearBusy()
+        this.router.navigate(['profile'])
+      },
+      (ex) => {
+        instance.clearBusy()
+        this.handleException(ex)
+      }
     )
   }
 

@@ -1,13 +1,13 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
-import {environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
 import * as MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import { DOCUMENT } from '@angular/common';
 import * as turf from '@turf/turf'
 import { AccountService } from 'src/app/Services/account.service';
-import { Router } from '@angular/router';
-import {  NgComponent } from '../../Helper/ng-component'
+import { Router, NavigationEnd } from '@angular/router';
+import { NgComponent } from '../../Helper/ng-component'
 import * as moment from 'moment';
 import { EventService } from 'src/app/Services/event.service';
 import { Filter } from './filter.model';
@@ -48,7 +48,7 @@ interface ICategory {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent extends NgComponent implements OnInit{
+export class DashboardComponent extends NgComponent implements OnInit {
 
   filter = new Filter();
   events !: IEvent[]
@@ -58,11 +58,10 @@ export class DashboardComponent extends NgComponent implements OnInit{
   appliedRadius !: number | null
   selectedRadiusUnit: any = 'miles'
   geoLocateCenter: any
-  dateRange: any
+  dateRange: any | null
   map!: mapboxgl.Map;
   moment: any = moment
-  current_lat !: number
-  current_lng !: number
+
 
 
 
@@ -73,7 +72,10 @@ export class DashboardComponent extends NgComponent implements OnInit{
 
   }
 
-
+  loadcurrentLocation = async () => {
+    const coordinates = await Geolocation.getCurrentPosition();
+    this.geoLocateCenter = [coordinates.coords.longitude, coordinates.coords.latitude]
+  };
 
 
 
@@ -84,25 +86,23 @@ export class DashboardComponent extends NgComponent implements OnInit{
     } else {
       this.appliedRadius = this.selectedRadius
     }
-    let searchRadius = this.makeRadius(this.geoLocateCenter, this.appliedRadius);
-    const anySrcImplObj: any = this.map.getSource('search-radius');
-    anySrcImplObj.setData(searchRadius);
-
-    this.filter.start_date = moment(this.dateRange.startDate).format('l')
-    this.filter.end_date = moment(this.dateRange.endDate).format('l')
-
-    if (this.filter.category != null || (this.filter.start_date != 'Invalid date' || this.filter.end_date != 'Invalid date')) {
-      this.eventService.filterEvents(this.filter).subscribe(
-        (res) => {
-          const response = res as IResponse<IEvent>;
-          this.events = response.records;
-          console.log(this.events);
-
-          this.renderEventsOnMap();
-        },
-        (ex) => console.log(ex)
-      )
+    if (this.geoLocateCenter != null) {
+      let searchRadius = this.makeRadius(this.geoLocateCenter, this.appliedRadius);
+      const anySrcImplObj: any = this.map.getSource('search-radius');
+      anySrcImplObj.setData(searchRadius);
     }
+
+    this.filter.start_date = moment(this.dateRange.startDate).format('YYYY-MM-DD')
+    this.filter.end_date = moment(this.dateRange.endDate).format('YYYY-MM-DD')
+    this.eventService.filterEvents(this.filter).subscribe(
+      (res) => {
+        const response = res as IResponse<IEvent>;
+        this.events = response.records;
+        this.renderEventsOnMap();
+      },
+      (ex) => this.handleException(ex)
+    )
+
 
 
   }
@@ -110,30 +110,30 @@ export class DashboardComponent extends NgComponent implements OnInit{
 
   renderEventsOnMap(): void {
     this.markers?.forEach(marker => marker.remove())
-    if(this.events != null)
-    for (const event of this.events) {
+    if (this.events != null)
+      for (const event of this.events) {
 
-      // create a HTML element for each feature
-      const markerEl = document.createElement('div');
-      markerEl.className = 'marker';
-      // make a marker for each feature and add to the map
-      let part1 = event.place_latlng.split(',')[0]
-      let part2 = event.place_latlng.split(',')[1]
-      let place: any = {
-        "geometry": {
-          "type": "Point",
-          "coordinates": {
-            "lng": part1,
-            "lat": part2
+        // create a HTML element for each feature
+        const markerEl = document.createElement('div');
+        markerEl.className = 'marker';
+        // make a marker for each feature and add to the map
+        let part1 = event.place_latlng.split(',')[0]
+        let part2 = event.place_latlng.split(',')[1]
+        let place: any = {
+          "geometry": {
+            "type": "Point",
+            "coordinates": {
+              "lng": part1,
+              "lat": part2
+            }
+
           }
-
         }
-      }
 
-      const marker = new mapboxgl.Marker(markerEl)
-        .setLngLat(place.geometry.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }).setHTML(`<a target="_blank" href="${event.url}" style="text-decoration:none; z-index:1000!important;"><div class="mapboxgl-popup-content">
+        const marker = new mapboxgl.Marker(markerEl)
+          .setLngLat(place.geometry.coordinates)
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25 }).setHTML(`<a target="_blank" href="${event.url}" style="text-decoration:none; z-index:1000!important;"><div class="mapboxgl-popup-content">
                 <h6 class="text-center mx-auto" style="color:#dc3545;">Events Details</h6>
                 <strong>Category : ${event.category}</strong>
                 <h5 class="m-top" style="margin-top:10px;">${event.name}</h5>
@@ -142,21 +142,19 @@ export class DashboardComponent extends NgComponent implements OnInit{
                 </div>
                 </a>
                 <a target="_blank" href="${event.url}" class="btn bg-primary text-light btn-sm p-2 m-2 ">Buy Ticket</a>`)
-        )
-        .addTo(this.map);
-      this.markers.push(marker);
-    }
+          )
+          .addTo(this.map);
+        this.markers.push(marker);
+      }
 
 
   }
- loadcurrentLocation = async () => {
-    const coordinates = await Geolocation.getCurrentPosition();
-    this.current_lat = coordinates.coords.latitude;
-    this.current_lng = coordinates.coords.longitude;
-  };
+
+
 
   ngOnInit(): void {
 
+    window.scrollTo(0, 0)
     this.loadcurrentLocation();
 
     //fatch events to show on map
@@ -165,13 +163,16 @@ export class DashboardComponent extends NgComponent implements OnInit{
         const response = res as IResponse<IEvent>;
         this.events = response.records;
       },
-      (ex) => this.handleException(ex)
+      (ex) => {
+        this.handleException(ex)
+      }
     )
     //fetch distinct categories to show
     this.eventService.showCategories().subscribe(
       (res) => {
         const response = res as IResponse<ICategory>;
         this.categories = response.records;
+
 
       },
       (ex) => this.handleException(ex)
@@ -222,13 +223,13 @@ export class DashboardComponent extends NgComponent implements OnInit{
     //when map load geolocate will be trigger map will show user current loaction
     instance.map.on("load", function () {
       geolocate.trigger();
+
     });
 
     //locate user and get current lat lng to show map initial radius
     geolocate.on("geolocate", locateUser);
 
     function locateUser(e: any) {
-      instance.geoLocateCenter = [instance.current_lng, instance.current_lat]
       let searchRadius = instance.makeRadius(instance.geoLocateCenter, instance.selectedRadius);
       const anySrcImplObj: any = instance.map.getSource('search-radius');
       anySrcImplObj.setData(searchRadius);

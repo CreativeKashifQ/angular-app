@@ -24,7 +24,7 @@
                  border:none;
               }
           </style>
-              <input type="text" class="daterange"  [(ngModel)]='dateRange' [locale]="{applyLabel: 'ok'}"  ngxDaterangepickerMd placeholder="Select Date Range"  class="form-control form-control-compact"/>
+              <input type="text" (change)="applyFilter()" class="daterange"  [(ngModel)]='dateRange' [locale]="{applyLabel: 'ok'}"  ngxDaterangepickerMd placeholder="Select Date Range"  class="form-control form-control-compact"/>
       </div>
   </div>
 
@@ -117,10 +117,11 @@
             <div class="col-6 p-0 m-0">
               <span class="badge rounded-pill bg-success"> {{event.status}}</span>
             </div>
+
           </div>
 
-          <div class="location d-block mt-2 mt-sm-2">
-            <h6 class="text-secondary events_location"  style="word-wrap: break-word;">
+
+            <h6  >
               <svg width="15px" height="15px" aria-hidden="true" focusable="false" data-prefix="fas"
                 data-icon="map-marker-alt" class="svg-inline--fa fa-map-marker-alt fa-w-12" role="img"
                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
@@ -130,7 +131,7 @@
               </svg>
               {{event.place_name}}
             </h6>
-          </div>
+
         </div>
 
       </div>

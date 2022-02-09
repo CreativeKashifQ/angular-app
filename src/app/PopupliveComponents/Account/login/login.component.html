@@ -17,7 +17,11 @@
 
               <div class="d-flex justify-content-center">
                   <button type="submit" class="btn btn-md px-4 py-2 w-100 mx-auto text-white my-4" style="background-color: #5669ff">
-                      <span class="align-middle">Sign In</span><img class="float-end" src="/assets/images/Group 4.png" />
+                      <span class="align-middle">Sign In</span>
+                    <div class="float-end">
+                        <span *ngIf="busy" style="width:27px; height:27px"  class="spinner-border  "></span>
+                      <img *ngIf="!busy"  src="/assets/images/Group 4.png" />
+                    </div>
                   </button>
               </div>
             </form>
@@ -28,13 +32,13 @@
                   <span class="h5 text-secondary my-2">OR</span>
               </div>
               <div class="d-flex justify-content-center">
-                <button type="button" (click)="loginWithGoogle()"  disabled class="btn btn-md btn-light bg-white px-4 mt-3 py-2 w-100 text-dark">
+                <button type="button" (click)="loginWithGoogle()"   class="btn btn-md btn-light bg-white px-4 mt-3 py-2 w-100 text-dark">
                     <img class="me-3" src="assets/images/Google.png" /> <span class="align-middle">Continue With Google</span>
                 </button>
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="button" (click)="loginWithFacebook()" disabled class="btn btn-md btn-light bg-white px-2 mt-3 mt-2 py-2 w-100 text-dark">
+                <button type="button" (click)="loginWithFacebook()"  class="btn btn-md btn-light bg-white px-2 mt-3 mt-2 py-2 w-100 text-dark">
                     <img class="me-3" src="assets/images/Facebook.png" /> <span class="align-middle">Continue With Facebook</span>
                 </button>
             </div>

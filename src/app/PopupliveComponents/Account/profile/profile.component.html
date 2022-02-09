@@ -1,34 +1,49 @@
 <app-main-nav></app-main-nav>
 
 <div class="wrapper">
-  <main class="container">
-
+  <main class="">
+    <div class="my-2">
+      <a href="javascript:void(0)" (click)="navigate()"  ><img class="float-start" src="/assets/images/left-chevron.png" /> Back</a>
+     </div>
+     <div *ngIf="!busy">
       <div class="d-flex justify-content-center text-center">
-       <div>
-         <h1 class="mt-5 mb-4">Profile</h1>
-
-         <img  onclick="document.getElementById('avatar').click()" class="rounded-circle" width="96" height="96" [src]="imageSrc || '/assets/images/ProfileImage.png'" alt="Profile Details">
-         <input id="avatar" hidden type='file' (change)="uploadAvatar($event);" />
-
         <div>
-          <h1 class="pt-4">{{user.name}}</h1>
-          <span>{{user.email}}</span>
-        </div>
-
-         <a routerLink="/edit-profile" class="btn btn-outline-primary mt-3">
-           <span class="me-2"><i class="fa-regular fa-pen-to-square"></i></span>
-           Edit Profile
-         </a>
+          <h1 class="mt-5 mb-4">Profile</h1>
+          <div class="text-center" >
+           <span *ngIf="busy" style="width:27px; height:27px"  class="spinner-border  "></span>
+           <img *ngIf="!busy"  onclick="document.getElementById('avatar').click()" class="rounded-circle" width="96" height="96" style="cursor: pointer;" [src]="imageSrc || '../../../assets/images/Profile.png'" alt="Profile Image">
        </div>
+
+          <input id="avatar" hidden type='file' (change)="uploadAvatar($event);" />
+
+         <div>
+           <h1 class="pt-4" *ngIf="user">{{user.name}}</h1>
+           <span *ngIf="user">{{user.email}}</span>
+         </div>
+
+          <a routerLink="/edit-profile" class="btn btn-outline-primary mt-3">
+
+            <div class="float-start ">
+              <span *ngIf="!busy" class="me-2"><i class="fa-regular fa-pen-to-square"></i></span>
+              <span *ngIf="busy"   class="spinner-border  spinner-border-sm   "></span>
+            </div>
+            Edit Profile
+          </a>
+        </div>
+       </div>
+
+      <div *ngIf="user &&  !user.provider" class="d-flex justify-content-between pt-5">
+        <h2 class="align-self-center">Interest</h2>
       </div>
 
-     <div *ngIf="!user.provider" class="d-flex justify-content-between pt-5">
-       <h2 class="align-self-center">Interest</h2>
+      <div class="d-inlin-flex " >
+        <span style="margin-left:2px!important"  *ngFor="let role of rolesItems" class="badge rounded-pill bg-primary">{{role}}</span>
+      </div>
      </div>
 
-     <div class="d-inlin-flex  ">
-       <span style="margin-left:2px!important" *ngFor="let role of rolesItems" class="badge rounded-pill bg-primary">{{role}}</span>
-     </div>
+        <div class="text-center">
+          <span *ngIf="busy" style="width:27px; height:27px; position:absolute; top:25%; left:45%"  class="spinner-border  "></span>
+        </div>
 
 
   </main>

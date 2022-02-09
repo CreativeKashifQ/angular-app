@@ -62,7 +62,7 @@ import { FacebookLoginProvider,GoogleLoginProvider, SocialLoginModule, SocialAut
           {
             id: FacebookLoginProvider.PROVIDER_ID,
             provider: new FacebookLoginProvider(
-              '966342190978579'
+              '320971323311480'
             )
           },
           {

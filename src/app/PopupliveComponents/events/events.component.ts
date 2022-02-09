@@ -36,14 +36,20 @@ export class EventsComponent extends NgComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setBusy()
+    const instance = this
     this.eventService.myEvents().subscribe(
       (res) => {
         const response = res as IResponse<IEvent>
+        instance.clearBusy()
         this.events = response.records
-        console.log(this.events);
+
 
       },
-      (ex) => this.handleException(ex)
+      (ex) => {
+        this.clearBusy()
+        this.handleException(ex)
+      }
 
     )
   }

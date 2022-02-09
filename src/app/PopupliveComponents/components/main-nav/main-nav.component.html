@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary p-3">
     <div class="container-fluid">
-      <a class="navbar-brand" routerLink="/dashboard">PopupLive</a>
+      <a class="navbar-brand" routerLink="/dashboard" >PopupLive</a>
 
       <!-- Side Canvas Starting -->
 
@@ -16,8 +16,15 @@
         </div>
         <div class="offcanvas-body">
           <div class="ms-2">
-            <img src="../../../assets/images/Profile.png" width="65" height="65" class="rounded-circle" />
-            <h3 class="mt-3">{{user.name}}</h3>
+
+            <img *ngIf="user" [src]="user.avatar || '../../../assets/images/Profile.png'" width="70" height="70" class="rounded-circle" />
+            <h3 class="mt-3" *ngIf="user">{{user.name}}</h3>
+          </div>
+          <div class="form-check p-0 ms-2 mt-4 sadbar">
+            <span><i class="fas fa-home me-3"></i></span>
+            <label class="form-check-label" for="flexCheckDefault">
+              <a routerLink="/dashboard">Home</a>
+            </label>
           </div>
           <div class="form-check p-0 ms-2 mt-4 sadbar">
             <span><i class="fas fa-gifts me-3"></i></span>

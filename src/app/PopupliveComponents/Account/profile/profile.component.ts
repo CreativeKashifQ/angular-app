@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router,NavigationEnd } from '@angular/router';
 import { AccountService } from 'src/app/Services/account.service';
 import { NgComponent } from '../../../Helper/ng-component'
 
@@ -26,13 +27,14 @@ export class ProfileComponent extends NgComponent implements OnInit {
 
   rolesItems: any = []
   imageSrc !: any
-  user: any
+  user : any
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService,private router:Router) {
     super()
   }
 
   uploadAvatar(event: any): void {
+
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       if (file) {
@@ -44,11 +46,20 @@ export class ProfileComponent extends NgComponent implements OnInit {
   }
 
   _handleReaderLoaded(readerEvt: any) {
+    this.setBusy()
+    const instance = this
     var binaryString = readerEvt.target.result;
     const filestring = btoa(binaryString);  // Converting binary string data.
     this.accountService.uploadFile(filestring).subscribe(
-        (res) => this.ngOnInit(),
-        (ex) => this.handleException(ex)
+        (res) => {
+          this.ngOnInit()
+          instance.clearBusy()
+        },
+        (ex) => {
+          instance.clearBusy()
+          this.handleException(ex)
+        }
+
     );
   }
 
@@ -62,14 +73,24 @@ export class ProfileComponent extends NgComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    this.setBusy()
+    const instance = this;
     this.accountService.user().subscribe(
       (res) => {
+        instance.clearBusy()
         this.user = res as IUser
         this.imageSrc = this.user.avatar
         this.rolesItems = this.user.roles.split(',')
       },
-      (ex) => this.handleException(ex)
+      (ex) => {
+        instance.clearBusy()
+        this.handleException(ex)
+      }
     )
+  }
+
+  navigate(){
+    this.router.navigate(['/dashboard'],{replaceUrl:true})
   }
 
 }

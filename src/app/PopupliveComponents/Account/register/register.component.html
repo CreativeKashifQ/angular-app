@@ -44,7 +44,11 @@
 
               <div class="d-flex justify-content-center">
                   <button type="submit" class="btn btn-md px-4 py-2 w-100 mx-auto text-white my-4" style="background-color: #5669ff">
-                      <span class="align-middle">Sign Up</span><img class="float-end" src="/assets/images/Group 4.png" />
+                      <span class="align-middle">Sign Up</span>
+                      <div class="float-end">
+                        <span *ngIf="busy" style="width:27px; height:27px"  class="spinner-border  "></span>
+                      <img *ngIf="!busy"  src="/assets/images/Group 4.png" />
+                    </div>
                   </button>
               </div>
             </form>

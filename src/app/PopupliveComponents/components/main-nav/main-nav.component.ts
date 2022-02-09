@@ -10,7 +10,7 @@ interface IUser {
   email: string
   email_verified_at: null
   id: number
-  name: string
+  name: string | null
   provider: null
   provider_id: null
   role: string

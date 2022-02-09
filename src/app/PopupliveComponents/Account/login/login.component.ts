@@ -33,19 +33,24 @@ interface IToken{
 export class LoginComponent extends NgComponent implements OnInit {
   user = new Login;
   token !: IToken
+
   constructor(private accountService: AccountService,private router:Router,private socialAuthService: SocialAuthService) {
     super();
   }
 
   attemptLogin() {
+    this.setBusy()
+    const instance = this;
     this.accountService.login(this.user).subscribe(
       (res) => {
         const response =  res as IToken
         localStorage.setItem('secretHash',response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
+        instance.clearBusy()
         this.router.navigate(['dashboard'])
       },
       (ex) => {
+        instance.clearBusy()
         this.handleException(ex);
       }
     );

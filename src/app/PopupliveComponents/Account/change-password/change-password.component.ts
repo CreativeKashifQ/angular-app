@@ -24,11 +24,18 @@ export class ChangePasswordComponent extends NgComponent implements OnInit {
 
   }
 
-
   changePassword(){
+    this.setBusy()
+    const instance = this
     this.accountService.changePassword(this.user as IPassword).subscribe(
-    (res) => this.router.navigate(['/profile']),
-    (ex) => this.handleException(ex)
+    (res) => {
+      instance.clearBusy()
+      this.router.navigate(['/'])
+    },
+    (ex) => {
+      instance.clearBusy()
+      this.handleException(ex)
+    }
 
     )
   }

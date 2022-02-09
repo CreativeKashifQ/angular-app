@@ -16,11 +16,18 @@ export class VerifyEmailComponent extends NgComponent implements OnInit {
   }
 
   verifyEmail(){
+    this.setBusy()
+    const instance = this
     const obj = {'otp':this.otp}
     this.accountService.verifyEmail(obj).subscribe(
-      (res) => this.router.navigate(['dashboard']),
-      (ex) => this.handleException(ex)
-
+      (res) =>{
+        instance.clearBusy()
+        this.router.navigate(['dashboard'])
+      },
+      (ex) => {
+        instance.clearBusy()
+        this.handleException(ex)
+      }
     )
   }
 

@@ -63,19 +63,22 @@ export class RegisterComponent extends NgComponent implements OnInit {
 
 
   attemptRegister() {
-    this.user.roles = this.selectedRoles
     this.setBusy();
+    const instance = this
+    this.user.roles = this.selectedRoles
     this.accountService.registerUser(this.user).subscribe(
         (res) => {
           const response =  res as IToken
           console.log(response.user);
-
           localStorage.setItem('secretHash',response.token);
-          // localStorage.setItem('user',JSON.stringify(response.user));
+          instance.clearBusy()
           this.router.navigate(['verify-email'])
         },
-        (ex) => this.handleException(ex),
-        () => this.clearBusy()
+        (ex) => {
+          instance.clearBusy()
+          this.handleException(ex)
+        }
+
     );
   }
 
